@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController {
+class recorderController: UIViewController {
 
     @IBAction func press(_ sender: Any) {
         let button = sender as! UIButton
