@@ -25,7 +25,45 @@ class Recorder {
         AVEncoderAudioQualityKey:   AVAudioQuality.max.rawValue
     ]
     
-    init(){
+    var fileURL : URL?
+    
+    init(_ kind : String){
         
+        if kind == "save"{
+            let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.cachesDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first!
+            fileURL =  dir.appendingPathComponent("log.txt")
+        }
+        else{
+            let directory = NSTemporaryDirectory()
+            let fileName = NSUUID().uuidString
+            fileURL = NSURL.fileURL(withPathComponents: [directory, fileName])
+        }
+        
+        // set up
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try audioSession.setActive(true)
+            try recorder = AVAudioRecorder(url:fileURL!, settings: recordSettings)
+            
+        } catch {
+            return
+        }
+        
+        recorder?.prepareToRecord()
+        recorder?.isMeteringEnabled = true
+    }
+    
+    func start(){
+        recorder?.record()
+    }
+    
+    func stop(){
+        recorder?.stop()
+    }
+    
+    func getLoundness() -> Float {
+        recorder?.updateMeters()
+        return (recorder?.averagePower(forChannel: 0))!
     }
 }
