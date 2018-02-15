@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		657D71F9AFDE0A453AC6EC76 /* Pods_sleepRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E39F7A35A2153FE253944BCF /* Pods_sleepRecorder.framework */; };
 		F685EB9D2032516100BDBC06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EB9C2032516100BDBC06 /* AppDelegate.swift */; };
 		F685EB9F2032516100BDBC06 /* recorderControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EB9E2032516100BDBC06 /* recorderControler.swift */; };
 		F685EBA22032516100BDBC06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F685EBA02032516100BDBC06 /* Main.storyboard */; };
@@ -14,9 +15,13 @@
 		F685EBA72032516100BDBC06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F685EBA52032516100BDBC06 /* LaunchScreen.storyboard */; };
 		F685EBAF2032519F00BDBC06 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EBAE2032519F00BDBC06 /* extension.swift */; };
 		F685EBB32032525400BDBC06 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EBB22032525400BDBC06 /* MainView.swift */; };
+		F6B14E2920354EC5006E3E71 /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B14E2820354EC5006E3E71 /* Recorder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4B0A623358CEEC261D9D4142 /* Pods-sleepRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sleepRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder.release.xcconfig"; sourceTree = "<group>"; };
+		E39F7A35A2153FE253944BCF /* Pods_sleepRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sleepRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDF496DCC5124F380CF309F0 /* Pods-sleepRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sleepRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder.debug.xcconfig"; sourceTree = "<group>"; };
 		F685EB992032516100BDBC06 /* sleepRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sleepRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F685EB9C2032516100BDBC06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F685EB9E2032516100BDBC06 /* recorderControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recorderControler.swift; sourceTree = "<group>"; };
@@ -26,6 +31,7 @@
 		F685EBA82032516100BDBC06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F685EBAE2032519F00BDBC06 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		F685EBB22032525400BDBC06 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		F6B14E2820354EC5006E3E71 /* Recorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +39,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				657D71F9AFDE0A453AC6EC76 /* Pods_sleepRecorder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3644C114296ABB67E29DEB3D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EDF496DCC5124F380CF309F0 /* Pods-sleepRecorder.debug.xcconfig */,
+				4B0A623358CEEC261D9D4142 /* Pods-sleepRecorder.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		4DC0AFDEDFC2889A925F5ACF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E39F7A35A2153FE253944BCF /* Pods_sleepRecorder.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F685EB902032516100BDBC06 = {
 			isa = PBXGroup;
 			children = (
 				F685EB9B2032516100BDBC06 /* sleepRecorder */,
 				F685EB9A2032516100BDBC06 /* Products */,
+				3644C114296ABB67E29DEB3D /* Pods */,
+				4DC0AFDEDFC2889A925F5ACF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +84,7 @@
 		F685EB9B2032516100BDBC06 /* sleepRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				F6B14E2720354E9B006E3E71 /* Model */,
 				F685EBB1203251E300BDBC06 /* View */,
 				F685EBB0203251D100BDBC06 /* Controller */,
 				F685EB9C2032516100BDBC06 /* AppDelegate.swift */,
@@ -86,6 +113,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		F6B14E2720354E9B006E3E71 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F6B14E2820354EC5006E3E71 /* Recorder.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -93,9 +128,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F685EBAB2032516100BDBC06 /* Build configuration list for PBXNativeTarget "sleepRecorder" */;
 			buildPhases = (
+				FFBDE2812F2464E97CFBA184 /* [CP] Check Pods Manifest.lock */,
 				F685EB952032516100BDBC06 /* Sources */,
 				F685EB962032516100BDBC06 /* Frameworks */,
 				F685EB972032516100BDBC06 /* Resources */,
+				F177E218EB3CAE1085E0640A /* [CP] Embed Pods Frameworks */,
+				C57671126A4E2D4A222EED56 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -153,11 +191,60 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C57671126A4E2D4A222EED56 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F177E218EB3CAE1085E0640A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FFBDE2812F2464E97CFBA184 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F685EB952032516100BDBC06 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6B14E2920354EC5006E3E71 /* Recorder.swift in Sources */,
 				F685EBAF2032519F00BDBC06 /* extension.swift in Sources */,
 				F685EBB32032525400BDBC06 /* MainView.swift in Sources */,
 				F685EB9F2032516100BDBC06 /* recorderControler.swift in Sources */,
@@ -296,6 +383,7 @@
 		};
 		F685EBAC2032516100BDBC06 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDF496DCC5124F380CF309F0 /* Pods-sleepRecorder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -311,6 +399,7 @@
 		};
 		F685EBAD2032516100BDBC06 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4B0A623358CEEC261D9D4142 /* Pods-sleepRecorder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

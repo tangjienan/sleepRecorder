@@ -20,14 +20,33 @@ class recorderControler: UIViewController {
     let threshold : Float = -10.0
     let timeInterval : Double = 0.5
     
+    var mainView : MainView!
     
     @IBAction func press(_ sender: Any) {
         button = sender as? UIButton
         button?.setTitle("i am pressed", for: .normal)
         startRecording()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print(String(describing: mainView.bounds.size.width) + "and" + String(describing : mainView.bounds.size.height))
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // create main view in here
+        mainView = MainView()
+        self.view.addSubview(mainView)
+        mainView.snp.makeConstraints { (make) in
+            make.size.equalTo(CGSize(width : 200, height : 200))
+            make.top.equalTo(self.view.snp.top)
+            make.left.equalTo(self.view.snp.left)
+            
+        }
+        mainView.backgroundColor = UIColor.yellow
+        
+        
         // unique tmp file for storing
         let directory = NSTemporaryDirectory()
         let fileName = NSUUID().uuidString

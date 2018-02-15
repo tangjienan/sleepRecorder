@@ -7,10 +7,59 @@
 //
 
 import UIKit
+import SnapKit
+/**
+    view for recording sound
+*/
 
 class MainView: UIView {
+    var shouldSetupConstraints = true
     
-    var tmpLabel : UILabel?
+    var recordButton : UIButton?
+    var viewTitle    : UILabel?
+    let screeSize  = UIScreen.main.bounds
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        //button
+        recordButton = UIButton(frame: CGRect.zero)
+        recordButton?.setTitle("record", for: .normal)
+        recordButton?.setTitleColor(UIColor.red, for: .normal)
+        
+        
+        //title
+        viewTitle = UILabel(frame : CGRect.zero)
+        viewTitle?.text = "title"
+        viewTitle?.textColor = UIColor.blue
+
+        //add view
+        self.addSubview(recordButton!)
+        self.addSubview(viewTitle!)
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override func updateConstraints() {
+        if(shouldSetupConstraints) {
+            // AutoLayout constraints
+            
+            viewTitle?.snp.makeConstraints { (make) in
+                make.top.equalTo(self.snp.top)
+                make.left.equalTo(self.snp.left)
+                make.size.equalTo(CGSize(width: 100, height: 100))
+            }
+            
+            recordButton?.snp.makeConstraints  { (make) in
+                make.size.equalTo( CGSize(width : 100, height : 100))
+                make.top.equalTo((self.viewTitle?.snp.top)!)
+                make.right.equalTo(self.snp.right)
+            }
+            shouldSetupConstraints = false
+            
+        }
+        super.updateConstraints()
+    }
 }
