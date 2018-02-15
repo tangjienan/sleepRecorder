@@ -17,12 +17,10 @@ class Recorder {
     var timer    = Timer()
     
     let recordSettings: [String: Any] = [
-        AVFormatIDKey:              kAudioFormatAppleIMA4,
-        AVSampleRateKey:            44100.0,
-        AVNumberOfChannelsKey:      2,
-        AVEncoderBitRateKey:        12800,
-        AVLinearPCMBitDepthKey:     16,
-        AVEncoderAudioQualityKey:   AVAudioQuality.max.rawValue
+        AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+        AVSampleRateKey:12000,
+        AVNumberOfChannelsKey:1,
+        AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
     var fileURL : URL?
@@ -30,12 +28,16 @@ class Recorder {
     init(_ kind : String){
         
         if kind == "save"{
-            let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.cachesDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first!
-            fileURL =  dir.appendingPathComponent("log.txt")
+           
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let docsDirect = paths[0]
+            fileURL = docsDirect.appendingPathComponent("recording.m4a")
         }
         else{
+            print("hey")
             let directory = NSTemporaryDirectory()
             let fileName = NSUUID().uuidString
+            
             fileURL = NSURL.fileURL(withPathComponents: [directory, fileName])
         }
         
@@ -47,6 +49,7 @@ class Recorder {
             try recorder = AVAudioRecorder(url:fileURL!, settings: recordSettings)
             
         } catch {
+            print("errir \(error)")
             return
         }
         
@@ -55,7 +58,9 @@ class Recorder {
     }
     
     func start(){
+        print("start2")
         recorder?.record()
+        print("start3")
     }
     
     func stop(){
