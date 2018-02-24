@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		657D71F9AFDE0A453AC6EC76 /* Pods_sleepRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E39F7A35A2153FE253944BCF /* Pods_sleepRecorder.framework */; };
+		F676AE422040EFFF006DA69E /* recordingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676AE412040EFFF006DA69E /* recordingListVC.swift */; };
+		F676AE442040F02C006DA69E /* mainViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676AE432040F02C006DA69E /* mainViewVC.swift */; };
 		F685EB9D2032516100BDBC06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EB9C2032516100BDBC06 /* AppDelegate.swift */; };
 		F685EB9F2032516100BDBC06 /* recorderControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EB9E2032516100BDBC06 /* recorderControler.swift */; };
 		F685EBA22032516100BDBC06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F685EBA02032516100BDBC06 /* Main.storyboard */; };
@@ -22,6 +24,8 @@
 		4B0A623358CEEC261D9D4142 /* Pods-sleepRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sleepRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		E39F7A35A2153FE253944BCF /* Pods_sleepRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sleepRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF496DCC5124F380CF309F0 /* Pods-sleepRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sleepRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder.debug.xcconfig"; sourceTree = "<group>"; };
+		F676AE412040EFFF006DA69E /* recordingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recordingListVC.swift; sourceTree = "<group>"; };
+		F676AE432040F02C006DA69E /* mainViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainViewVC.swift; sourceTree = "<group>"; };
 		F685EB992032516100BDBC06 /* sleepRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sleepRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F685EB9C2032516100BDBC06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F685EB9E2032516100BDBC06 /* recorderControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recorderControler.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				F685EB9E2032516100BDBC06 /* recorderControler.swift */,
+				F676AE412040EFFF006DA69E /* recordingListVC.swift */,
+				F676AE432040F02C006DA69E /* mainViewVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -248,6 +254,8 @@
 				F685EBAF2032519F00BDBC06 /* extension.swift in Sources */,
 				F685EBB32032525400BDBC06 /* MainView.swift in Sources */,
 				F685EB9F2032516100BDBC06 /* recorderControler.swift in Sources */,
+				F676AE442040F02C006DA69E /* mainViewVC.swift in Sources */,
+				F676AE422040EFFF006DA69E /* recordingListVC.swift in Sources */,
 				F685EB9D2032516100BDBC06 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

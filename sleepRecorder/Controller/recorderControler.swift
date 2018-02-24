@@ -11,15 +11,15 @@ import AVFoundation
 import Foundation
 import CoreAudio
 
-class recorderControler: UIViewController,AVAudioPlayerDelegate{
+class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderDelegate{
 
     var checkSound : Recorder?
-    var player : AVAudioPlayer?
+    var audioSession = AVAudioSession.sharedInstance()
     var recording = 0
     
     var levelTimer = Timer()
     var button : UIButton?
-    
+    var player : AVAudioPlayer?
     
     let threshold : Float = -10.0
     let timeInterval : Double = 0.5
@@ -38,7 +38,7 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //playBack()
         // create main view in here
         mainView = MainView()
         self.view.addSubview(mainView)
@@ -68,37 +68,49 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate{
         button?.setTitle("stop recording", for: .normal)
     }
     @objc func checkAudioForInterval(){
-        
+        print("I am checking")
         let level = checkSound?.getLoundness()
-        if level! > Float(-50.0){
-            debugPrint("start recording")
+        if level! > Float(-30.0){
+            button?.setTitle("listen", for: .normal)
             if recording == 0{
+                debugPrint("start recording")
                 startRecording()
-                recording = 1
-            }
+                recording = 1  }
         }
     }
     
     func startRecording(){
         let saveRec = Recorder("save")
-        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopRecording(_:)),userInfo: saveRec, repeats: false)
+        saveRec.start()
+        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(stopRecording(_:)),userInfo: saveRec, repeats: false)
         
     }
     
     @objc func stopRecording(_ timer : Timer){
         //recorder?.s
+        button?.setTitle("nolisten", for: .normal)
         let tmp = timer.userInfo as! Recorder
         tmp.stop()
-        print("it is stop")
+        recording = 0
         playBack()
     }
     
     func playBack(){
+        let audioSession = AVAudioSession.sharedInstance()
+        do{
+            //try audioSession.setActive(false)
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
+        }
+        catch{
+            print("errir \(error)")
+            return
+        }
+        //
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let docsDirect = paths[0]
         let fileURL = docsDirect.appendingPathComponent("recording.m4a")
-        print("hey hey hey")
-        
+      
         do {
             let resources = try fileURL.resourceValues(forKeys:[.fileSizeKey])
             let fileSize = resources.fileSize!
@@ -106,19 +118,32 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate{
         } catch {
             print("Error: \(error)")
         }
-        
         do{
-            let sound = try AVAudioPlayer(contentsOf: fileURL)
-            self.player = sound
-            sound.delegate = self
-            sound.prepareToPlay()
-            sound.play()
+            self.player = try AVAudioPlayer(contentsOf: fileURL)
+            //player?.delegate = self
+            player?.prepareToPlay()
+            DispatchQueue.global().async {
+                self.player?.play()
+                print("Sound should be playing")
+            }
+            
         }
         catch{
             print("error play back")
             return
         }
-       
+        
+        do{
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try audioSession.setActive(true)
+        }
+        catch{
+            print("errir \(error)")
+            return
+        }
+        
     }
+    
+    
 }
 
