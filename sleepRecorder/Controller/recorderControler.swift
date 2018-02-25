@@ -24,49 +24,62 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
     let threshold : Float = -10.0
     let timeInterval : Double = 0.5
     
-    var mainView : MainView!
     
-    @IBAction func press(_ sender: Any) {
-        button = sender as? UIButton
-        button?.setTitle("i am pressed", for: .normal)
-        startListening()
-    }
+    var mainView : RecorderView!
+    var recordButton : UIButton?
     
     override func viewDidAppear(_ animated: Bool) {
-        print(String(describing: mainView.bounds.size.width) + "and" + String(describing : mainView.bounds.size.height))
+        
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         //playBack()
         // create main view in here
-        mainView = MainView()
+        let frame = UIScreen.main.bounds
+        mainView = RecorderView()
         self.view.addSubview(mainView)
         mainView.snp.makeConstraints { (make) in
-            make.size.equalTo(CGSize(width : 200, height : 200))
+            make.size.equalTo(CGSize(width : frame.width - 20, height : frame.height*0.8))
             make.top.equalTo(self.view.snp.top)
             make.left.equalTo(self.view.snp.left)
-            
         }
         mainView.backgroundColor = UIColor.yellow
         checkSound = Recorder("tmp")
-        mainView.recordButton?.addTarget(self, action: #selector(stopListening), for: .touchUpInside)
+        recordButton = mainView.recordButton
+        mainView.recordButton?.addTarget(self, action: #selector(reccordButtonPress), for: .touchUpInside)
     }
+    
+    // button pressed handler
+    @objc func reccordButtonPress(){
+        if recordButton?.titleLabel?.text == "record"{
+            recordButton?.setTitle("recording", for: .normal)
+        }
+        else{
+            recordButton?.setTitle("record", for: .normal)
+        }
+    }
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func startListening(){
+    @objc func startListening(){
         //recorder?.record()
         print("listening")
         checkSound?.start()
         levelTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(checkAudioForInterval), userInfo: nil, repeats: true)
     }
+    
     @objc func stopListening(){
+        print("i am pressed")
         checkSound?.stop()
         levelTimer.invalidate()
         button?.setTitle("stop recording", for: .normal)
     }
+    
     @objc func checkAudioForInterval(){
         print("I am checking")
         let level = checkSound?.getLoundness()
@@ -132,7 +145,6 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
             print("error play back")
             return
         }
-        
         do{
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
             try audioSession.setActive(true)
