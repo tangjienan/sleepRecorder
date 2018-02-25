@@ -18,7 +18,6 @@ import SnapKit
 class mainViewVC: UIViewController {
 
     let items = ["recor","recording"]
-    
     var customSC : UISegmentedControl?
     var contentView : UIView?
     
@@ -36,11 +35,14 @@ class mainViewVC: UIViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
+        //navigationItem.title = "SleepRecorder"
+        //navigationController?.navigationBar.prefersLargeTitles = true
         let tmp = initSC()
         self.view.addSubview(tmp)
         view.backgroundColor = UIColor.white
         initContainerView()
         displayCurrentTab(0)
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

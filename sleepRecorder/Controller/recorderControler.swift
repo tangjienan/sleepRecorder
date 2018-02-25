@@ -13,25 +13,21 @@ import CoreAudio
 
 class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderDelegate{
 
+    
+    var currentRecorder : Recorder?
     var checkSound : Recorder?
     var audioSession = AVAudioSession.sharedInstance()
     var recording = 0
-    
     var levelTimer = Timer()
     var button : UIButton?
     var player : AVAudioPlayer?
-    
     let threshold : Float = -10.0
     let timeInterval : Double = 0.5
-    
-    
     var mainView : RecorderView!
     var recordButton : UIButton?
+    var count = 0
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-    }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //playBack()
@@ -45,7 +41,7 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
             make.left.equalTo(self.view.snp.left)
         }
         mainView.backgroundColor = UIColor.yellow
-        checkSound = Recorder("tmp")
+        checkSound = Recorder("tmp",0)
         recordButton = mainView.recordButton
         mainView.recordButton?.addTarget(self, action: #selector(reccordButtonPress), for: .touchUpInside)
     }
@@ -54,27 +50,26 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
     @objc func reccordButtonPress(){
         if recordButton?.titleLabel?.text == "record"{
             recordButton?.setTitle("recording", for: .normal)
+            startListening()
         }
         else{
             recordButton?.setTitle("record", for: .normal)
+            if currentRecorder != nil{
+                currentRecorder?.stop()
+            }
+            stopListening()
         }
     }
     
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    @objc func startListening(){
+    func startListening(){
         //recorder?.record()
-        print("listening")
+        print("start listening")
         checkSound?.start()
         levelTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(checkAudioForInterval), userInfo: nil, repeats: true)
     }
     
-    @objc func stopListening(){
-        print("i am pressed")
+    func stopListening(){
+        print("listening is stopped")
         checkSound?.stop()
         levelTimer.invalidate()
         button?.setTitle("stop recording", for: .normal)
@@ -83,35 +78,35 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
     @objc func checkAudioForInterval(){
         print("I am checking")
         let level = checkSound?.getLoundness()
-        if level! > Float(-30.0){
+        if level! > Float(-40.0){
             button?.setTitle("listen", for: .normal)
-            if recording == 0{
+            if recording == 0 {
+                count = count + 1
                 debugPrint("start recording")
                 startRecording()
-                recording = 1  }
+                recording = 1
+            }
         }
     }
     
     func startRecording(){
-        let saveRec = Recorder("save")
+        let saveRec = Recorder("save",count)
+        currentRecorder = saveRec
         saveRec.start()
         Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(stopRecording(_:)),userInfo: saveRec, repeats: false)
-        
     }
-    
     @objc func stopRecording(_ timer : Timer){
         //recorder?.s
         button?.setTitle("nolisten", for: .normal)
         let tmp = timer.userInfo as! Recorder
         tmp.stop()
         recording = 0
-        playBack()
+        //playBack()
     }
     
     func playBack(){
         let audioSession = AVAudioSession.sharedInstance()
         do{
-            //try audioSession.setActive(false)
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
             try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
         }
@@ -139,7 +134,6 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
                 self.player?.play()
                 print("Sound should be playing")
             }
-            
         }
         catch{
             print("error play back")
@@ -153,9 +147,6 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
             print("errir \(error)")
             return
         }
-        
     }
-    
-    
 }
 
