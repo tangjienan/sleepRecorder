@@ -11,7 +11,7 @@ import AVFoundation
 import Foundation
 import CoreAudio
 
-class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderDelegate{
+class recorderControler: UIViewController,AVAudioRecorderDelegate{
 
     
     var currentRecorder : Recorder?
@@ -104,49 +104,6 @@ class recorderControler: UIViewController,AVAudioPlayerDelegate,AVAudioRecorderD
         //playBack()
     }
     
-    func playBack(){
-        let audioSession = AVAudioSession.sharedInstance()
-        do{
-            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
-        }
-        catch{
-            print("errir \(error)")
-            return
-        }
-        //
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let docsDirect = paths[0]
-        let fileURL = docsDirect.appendingPathComponent("recording.m4a")
-      
-        do {
-            let resources = try fileURL.resourceValues(forKeys:[.fileSizeKey])
-            let fileSize = resources.fileSize!
-            print ("\(fileSize)")
-        } catch {
-            print("Error: \(error)")
-        }
-        do{
-            self.player = try AVAudioPlayer(contentsOf: fileURL)
-            //player?.delegate = self
-            player?.prepareToPlay()
-            DispatchQueue.global().async {
-                self.player?.play()
-                print("Sound should be playing")
-            }
-        }
-        catch{
-            print("error play back")
-            return
-        }
-        do{
-            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try audioSession.setActive(true)
-        }
-        catch{
-            print("errir \(error)")
-            return
-        }
-    }
+    
 }
 
