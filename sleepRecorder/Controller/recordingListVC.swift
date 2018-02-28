@@ -17,7 +17,7 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
     var fileNameArray = [audioFile]()
     var audioSession = AVAudioSession.sharedInstance()
     var player : AVAudioPlayer?
-
+    let fileManager = FileManager.default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +25,7 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
         readList()
     }
     override func viewWillAppear(_ animated: Bool) {
+        readList()
         self.tableView.reloadData()
     }
     
@@ -53,6 +54,15 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         print(indexPath.row)
         if editingStyle == .delete {
+            
+            let tmp = self.fileNameArray[indexPath.row]
+            do {
+                print(tmp.urlPath)
+                try fileManager.removeItem(at: tmp.urlPath as! URL)
+            }
+            catch let error as NSError {
+                print("Ooops! Something went wrong: \(error)")
+            }
             self.fileNameArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             //TODO : delet file
@@ -105,6 +115,9 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
         //
         
         let fileURL = url
+        
+        // getting the size of the file
+        
         /*
         do {
             let resources = try fileURL.resourceValues(forKeys:[.fileSizeKey])
@@ -141,6 +154,9 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
         guard let tmpPlayer = self.player else {return}
         if tmpPlayer.isPlaying == true{
             tmpPlayer.stop()
+            self.player = nil
+        }
+        else{
             self.player = nil
         }
     }
