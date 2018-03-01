@@ -133,7 +133,8 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
     }
     
     func startRecording(){
-        let saveRec = Recorder("save",count)
+        let timestamp = NSDate().timeIntervalSince1970
+        let saveRec = Recorder("save",timestamp)
         currentRecorder = saveRec
         recording = 1
         saveRec.start()

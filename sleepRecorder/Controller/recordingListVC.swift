@@ -79,6 +79,7 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
     }
     
     func readList(){
+        fileNameArray.removeAll()
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let docsDirect = paths[0]
         let enumerator = FileManager.default.enumerator(at : docsDirect, includingPropertiesForKeys: nil,options: [.skipsHiddenFiles, .skipsPackageDescendants])!.allObjects
@@ -86,12 +87,24 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
             let tmp = tmp as! URL
             let tmp2 = tmp as NSURL
             let nameString = parseFileName(tmp)
+            let tmpDouble = Double(nameString)
+            let nameStringFormat = convertTimeStampToDate(tmpDouble!)
             let tmpFile = audioFile()
-            tmpFile.fileName = nameString
+            tmpFile.fileName = nameStringFormat
             tmpFile.urlPath = tmp2
             fileNameArray.append(tmpFile)
         }
         self.tableView.reloadData()
+    }
+    
+    func convertTimeStampToDate(_ timeStamp : Double) -> String{
+        let date = Date(timeIntervalSince1970: timeStamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "PST") //Set timezone that you want
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" //Specify your format that you want
+        let strDate = dateFormatter.string(from: date)
+        return strDate
     }
     
     func parseFileName(_ path : URL) -> String{
@@ -100,7 +113,6 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
         let result = name.substring(from: name.index(name.startIndex, offsetBy: 0))
         return result
     }
-    
     
     func playBack(_ url : NSURL){
         let audioSession = AVAudioSession.sharedInstance()
@@ -113,9 +125,7 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
             return
         }
         //
-        
         let fileURL = url
-        
         // getting the size of the file
         
         /*

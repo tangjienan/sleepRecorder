@@ -27,11 +27,11 @@ class Recorder : NSObject{
     
     var fileURL : URL?
     
-    init(_ kind : String, _ count : Int){
+    init(_ kind : String, _ count : Double){
         if kind == "save"{
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let docsDirect = paths[0]
-            let name = "recording" + String(count) + ".m4a"
+            let name = String(count) + ".m4a"
             fileURL = docsDirect.appendingPathComponent(name)
         }
         else{
