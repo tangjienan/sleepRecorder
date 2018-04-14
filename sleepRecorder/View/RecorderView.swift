@@ -29,6 +29,22 @@ class RecorderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        initialSubview()
+        //add view
+        addAllSubview()
+        
+    }
+    
+    func addAllSubview(){
+        self.addSubview(dbText!)
+        self.addSubview(bottomView!)
+        self.addSubview(onOffSwitch!)
+        self.addSubview(slideBarView!)
+        self.addSubview(status!)
+        self.bringSubview(toFront: slideBarView!)
+    }
+    
+    func initialSubview(){
         //db text
         dbText = UILabel()
         dbText?.font = UIFont(name: fontName, size: 16)
@@ -54,15 +70,10 @@ class RecorderView: UIView {
         status?.font = UIFont(name: fontName, size: 16)
         status?.font = UIFont.boldSystemFont(ofSize: 56)
         status?.text = "Stop"
-        //add view
-        self.addSubview(dbText!)
-        self.addSubview(bottomView!)
-        self.addSubview(onOffSwitch!)
-        self.addSubview(slideBarView!)
-        self.addSubview(status!)
-        self.bringSubview(toFront: slideBarView!)
-        
     }
+    
+    
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

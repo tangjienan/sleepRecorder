@@ -12,8 +12,8 @@ import Foundation
 import CoreAudio
 
 class recorderControler: UIViewController,AVAudioRecorderDelegate{
-
     
+    var fontName = "Apple SD Gothic Neo"
     var currentRecorder : Recorder?
     var checkSound : Recorder?
     var audioSession = AVAudioSession.sharedInstance()
@@ -29,22 +29,23 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
     let defaults = UserDefaults.standard
     var count = 0
     var dbValue : Int?
+    var statusLabel : UILabel?
+    var saveRec : Recorder?
+    
+    
     
     // var to store
     var recording = 0 {
         didSet{
             if recording == 0{
                 if listening == 1{
-//                    mainView.status?.text = "listening..."
                     mainView.backgroundColor = listeningColor
                 }
                 else if listening == 0{
-//                    mainView.status?.text = "waiting"
                     mainView.backgroundColor = waitingColor
                 }
             }
             else if recording == 1{
-//                mainView.status?.text = "recording"
                 mainView.backgroundColor = recordingColor
             }
         }
@@ -54,11 +55,11 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         didSet{
             if listening == 0{
                 mainView.backgroundColor = waitingColor
-                mainView.status?.text = "waiting"
+                //                mainView.status?.text = "waiting"
             }
             else if listening == 1 {
                 mainView.backgroundColor = listeningColor
-                mainView.status?.text = "listening..."
+                //                mainView.status?.text = "listening..."
             }
         }
     }
@@ -81,7 +82,7 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
             print(mainView.frame)
             mainView.backgroundColor = UIColor.yellow
         }
-        
+        self.statusLabel = mainView.status
         checkSound = Recorder("tmp",0)
         onOffSwitch = mainView.onOffSwitch
         mainView.onOffSwitch?.addTarget(self, action: #selector(reccordButtonPress), for: .touchUpInside)
@@ -94,18 +95,20 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         mainView.dbText?.text = "\(self.dbValue!)db"
     }
     
-   
+    
     
     // button pressed handler
     @objc func reccordButtonPress(){
         
         if (onOffSwitch?.isOn)! {
             startListening()
+            statusLabel?.text = "Listening..."
         }
         else{
             if currentRecorder != nil{
                 currentRecorder?.stop()
             }
+            statusLabel?.text = "Stop"
             stopListening()
         }
     }
@@ -115,7 +118,8 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         print("start listening")
         checkSound?.start()
         listening = 1
-        levelTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(checkAudioForInterval), userInfo: nil, repeats: true)
+        let userInfo = ["id" : "1"]
+        levelTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(checkAudioForInterval(_ : )), userInfo: userInfo, repeats: true)
     }
     
     func stopListening(){
@@ -123,44 +127,50 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         checkSound?.stop()
         levelTimer.invalidate()
         listening = 0
-//        button?.setTitle("stop recording", for: .normal)
     }
     
-    @objc func checkAudioForInterval(){
+    @objc func checkAudioForInterval(_ timer : Timer){
+        let tmp = timer.userInfo as! [String : String]
+        if tmp["id"] == "1" && recording == 1{
+            return
+        }
         let level = checkSound?.getLoundness()
-        if level! > Float(-40.0){
-//            button?.setTitle("listen", for: .normal)
+        //debugPrint("checking sound level \(String(describing: level))")
+        if level! > Float(-20.0){
             if recording == 0 {
                 count = count + 1
                 defaults.set(count, forKey: "count")
-                debugPrint("start recording")
-                startRecording()
-                recording = 1
+                if(recording != 1){
+                    debugPrint("start recording \(String(describing: level))")
+                    startRecording()
+                    recording = 1
+                }
+            }
+        }
+        else{
+            if(recording == 1){
+                recording = 0;
+                //stopRecording
+                print("stop the recording \(String(describing: level))")
+                saveRec?.stop()
             }
         }
     }
     
     func startRecording(){
         let timestamp = NSDate().timeIntervalSince1970
-        let saveRec = Recorder("save",timestamp)
+        saveRec = Recorder("save",timestamp)
         currentRecorder = saveRec
         recording = 1
-        saveRec.start()
-        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(stopRecording(_:)),userInfo: saveRec, repeats: false)
+        saveRec?.start()
+        let userInfo = ["id" : "2"]
+        //TODO : stopRecording when the loundness is less than threshold
+        Timer.scheduledTimer(timeInterval: timeInterval * 5, target: self, selector: #selector(checkAudioForInterval(_:)),userInfo : userInfo, repeats: true)
     }
-    @objc func stopRecording(_ timer : Timer){
-        //recorder?.s
-//        button?.setTitle("nolisten", for: .normal)
-        recording = 0
-        let tmp = timer.userInfo as! Recorder
-        tmp.stop()
-        recording = 0
-        //playBack()
-    }
+    
     
     // geting count number
     func getCountNumber(){
-        
         // Receive
         if let count = defaults.string(forKey: "count")
         {
@@ -172,6 +182,6 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
             print("this is the count \(String(describing: tmp))")
         }
     }
-
+    
 }
 
