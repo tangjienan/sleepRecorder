@@ -21,32 +21,30 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
     var waitingColor   = UIColor.green
     var recordingColor = UIColor.red
     var levelTimer = Timer()
-    var button : UIButton?
     var player : AVAudioPlayer?
     let threshold : Float = -10.0
     let timeInterval : Double = 0.5
     var mainView : RecorderView!
-    var recordButton : UIButton?
+    var onOffSwitch : UISwitch?
     let defaults = UserDefaults.standard
-    
     var count = 0
-    
+    var dbValue : Int?
     
     // var to store
     var recording = 0 {
         didSet{
             if recording == 0{
                 if listening == 1{
-                    mainView.status?.text = "listening..."
+//                    mainView.status?.text = "listening..."
                     mainView.backgroundColor = listeningColor
                 }
                 else if listening == 0{
-                    mainView.status?.text = "waiting"
+//                    mainView.status?.text = "waiting"
                     mainView.backgroundColor = waitingColor
                 }
             }
             else if recording == 1{
-                mainView.status?.text = "recording"
+//                mainView.status?.text = "recording"
                 mainView.backgroundColor = recordingColor
             }
         }
@@ -80,21 +78,31 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
             make.size.equalTo(CGSize(width : frame.width - 20, height : frame.height*0.8))
             make.top.equalTo(self.view.snp.top)
             make.left.equalTo(self.view.snp.left)
+            print(mainView.frame)
+            mainView.backgroundColor = UIColor.yellow
         }
-        mainView.backgroundColor = UIColor.yellow
+        
         checkSound = Recorder("tmp",0)
-        recordButton = mainView.recordButton
-        mainView.recordButton?.addTarget(self, action: #selector(reccordButtonPress), for: .touchUpInside)
+        onOffSwitch = mainView.onOffSwitch
+        mainView.onOffSwitch?.addTarget(self, action: #selector(reccordButtonPress), for: .touchUpInside)
+        mainView.slideBarView?.dbSlideBar?.addTarget(self, action: #selector(getDisplaySlideBarValue), for: .valueChanged)
     }
+    
+    @objc func getDisplaySlideBarValue(){
+        
+        self.dbValue = Int((mainView.slideBarView?.dbSlideBar.value)!)
+        mainView.dbText?.text = "\(self.dbValue!)db"
+    }
+    
+   
     
     // button pressed handler
     @objc func reccordButtonPress(){
-        if recordButton?.titleLabel?.text == "start"{
-            recordButton?.setTitle("stop", for: .normal)
+        
+        if (onOffSwitch?.isOn)! {
             startListening()
         }
         else{
-            recordButton?.setTitle("start", for: .normal)
             if currentRecorder != nil{
                 currentRecorder?.stop()
             }
@@ -115,13 +123,13 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         checkSound?.stop()
         levelTimer.invalidate()
         listening = 0
-        button?.setTitle("stop recording", for: .normal)
+//        button?.setTitle("stop recording", for: .normal)
     }
     
     @objc func checkAudioForInterval(){
         let level = checkSound?.getLoundness()
         if level! > Float(-40.0){
-            button?.setTitle("listen", for: .normal)
+//            button?.setTitle("listen", for: .normal)
             if recording == 0 {
                 count = count + 1
                 defaults.set(count, forKey: "count")
@@ -142,7 +150,7 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
     }
     @objc func stopRecording(_ timer : Timer){
         //recorder?.s
-        button?.setTitle("nolisten", for: .normal)
+//        button?.setTitle("nolisten", for: .normal)
         recording = 0
         let tmp = timer.userInfo as! Recorder
         tmp.stop()

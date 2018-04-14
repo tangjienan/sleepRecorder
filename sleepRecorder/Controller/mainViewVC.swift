@@ -55,9 +55,11 @@ class mainViewVC: UIViewController {
         let frame = UIScreen.main.bounds
         customSC?.frame = CGRect(x : frame.minX + 10, y : frame.minY + 50,
                                 width : frame.width - 20, height : frame.height*0.1)
+        print(customSC?.frame)
         customSC?.addTarget(self, action: #selector(mainViewVC.switchTab(_:)), for: .valueChanged)
         return customSC!
     }
+    
     //select VC when tab press
     @objc func switchTab(_ sender: UISegmentedControl){
         if currentViewController != nil{

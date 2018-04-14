@@ -13,52 +13,92 @@ import SnapKit
 */
 
 class RecorderView: UIView {
+    var fontName = "Apple SD Gothic Neo"
+    
+    var dbText : UILabel?
     var shouldSetupConstraints = true
-    var recordButton : UIButton?
     var viewTitle    : UILabel?
     var status       : UILabel?
     let screeSize  = UIScreen.main.bounds
+    var slideBarView    : slideBar?
+    var onOffSwitch  : UISwitch?
+    var bottomView : UIView?
+    var mindBValue = Float(50)
+    var maxdBValue = Float(100)
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //button
-        recordButton = UIButton(frame: CGRect.zero)
-        recordButton?.setTitle("start", for: .normal)
-        recordButton?.setTitleColor(UIColor.black, for: .normal)
-        //title
-        viewTitle = UILabel(frame : CGRect.zero)
-        viewTitle?.text = "status:  "
-        viewTitle?.textColor = UIColor.blue
-        //status
-        status = UILabel(frame : CGRect.zero)
-        status?.text = "waiting...."
-        status?.textColor = UIColor.blue
+        //db text
+        dbText = UILabel()
+        dbText?.font = UIFont(name: fontName, size: 16)
+        dbText?.font = UIFont.boldSystemFont(ofSize: 56)
+        dbText?.text = "89db"
+        //bottomView
+        bottomView = UIView()
+        bottomView?.layer.borderWidth = 2
+        bottomView?.layer.borderColor = UIColor.black.cgColor
+        bottomView?.backgroundColor = .blue
+        //switch
+        onOffSwitch = UISwitch()
+        onOffSwitch?.onTintColor = .red
+        onOffSwitch?.thumbTintColor = .purple
+        // slideView
+        slideBarView = slideBar()
+        slideBarView?.layer.borderWidth = 2
+        slideBarView?.layer.borderColor = UIColor.black.cgColor
+        slideBarView?.dbSlideBar.minimumValue = mindBValue
+        slideBarView?.dbSlideBar.maximumValue = maxdBValue
+        //staus
+        status = UILabel()
+        status?.font = UIFont(name: fontName, size: 16)
+        status?.font = UIFont.boldSystemFont(ofSize: 56)
+        status?.text = "Stop"
         //add view
-        self.addSubview(recordButton!)
-        self.addSubview(viewTitle!)
+        self.addSubview(dbText!)
+        self.addSubview(bottomView!)
+        self.addSubview(onOffSwitch!)
+        self.addSubview(slideBarView!)
         self.addSubview(status!)
+        self.bringSubview(toFront: slideBarView!)
+        
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     override func updateConstraints() {
+        let frame = UIScreen.main.bounds
+        slideBarView?.dbSlideBar?.translatesAutoresizingMaskIntoConstraints = false;
         if(shouldSetupConstraints) {
-            // AutoLayout constraints
-            viewTitle?.snp.makeConstraints { (make) in
-                make.top.equalTo(self.snp.top)
+    
+            status?.snp.makeConstraints({ (make) in
+                //make.bottom.equalTo((self.bottomView?.snp.bottom)!).offset(-50)
+                make.center.equalTo(bottomView!)
+            })
+        
+            slideBarView?.snp.makeConstraints({ (make) in
+                make.top.equalTo((dbText?.snp.bottom)!).offset(10)
                 make.left.equalTo(self.snp.left)
-                make.size.equalTo(CGSize(width: 55, height: 100))
-            }
-            status?.snp.makeConstraints { (make) in
-                make.left.equalTo((viewTitle?.snp.right)!)
-                make.size.equalTo(CGSize(width: 100, height: 100))
-                
-            }
-            recordButton?.snp.makeConstraints  { (make) in
-                make.size.equalTo( CGSize(width : 100, height : 100))
-                make.center.equalTo(self)
-            }
+            })
+            
+            onOffSwitch?.snp.makeConstraints({ (make) in
+                make.right.equalTo(self.snp.right)
+                make.top.equalTo((slideBarView?.snp.bottom)!).offset(30)
+            })
+            bottomView?.snp.makeConstraints({ (make) in
+                make.left.equalTo(self.snp.left)
+                make.right.equalTo(self.snp.right)
+                make.top.equalTo((slideBarView?.snp.bottom)!).offset(30)
+                make.bottom.equalTo(self.snp.bottom)
+            })
+            dbText?.snp.makeConstraints({ (make) in
+                make.centerX.equalTo(self)
+                make.top.equalTo(self.snp.top).offset(50)
+            })
+            
             shouldSetupConstraints = false
         }
+        print(slideBarView?.frame)
         super.updateConstraints()
     }
 }

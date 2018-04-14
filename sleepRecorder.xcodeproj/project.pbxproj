@@ -18,6 +18,8 @@
 		F685EBAF2032519F00BDBC06 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EBAE2032519F00BDBC06 /* extension.swift */; };
 		F685EBB32032525400BDBC06 /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F685EBB22032525400BDBC06 /* RecorderView.swift */; };
 		F6B14E2920354EC5006E3E71 /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B14E2820354EC5006E3E71 /* Recorder.swift */; };
+		F6C87E7E20807207005AAC5B /* slideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C87E7D20807207005AAC5B /* slideBar.swift */; };
+		F6C87E802080729B005AAC5B /* slideBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6C87E7F2080729B005AAC5B /* slideBar.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		F685EBAE2032519F00BDBC06 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		F685EBB22032525400BDBC06 /* RecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderView.swift; sourceTree = "<group>"; };
 		F6B14E2820354EC5006E3E71 /* Recorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
+		F6C87E7D20807207005AAC5B /* slideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = slideBar.swift; sourceTree = "<group>"; };
+		F6C87E7F2080729B005AAC5B /* slideBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = slideBar.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +118,8 @@
 			isa = PBXGroup;
 			children = (
 				F685EBB22032525400BDBC06 /* RecorderView.swift */,
+				F6C87E7D20807207005AAC5B /* slideBar.swift */,
+				F6C87E7F2080729B005AAC5B /* slideBar.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -190,6 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F685EBA72032516100BDBC06 /* LaunchScreen.storyboard in Resources */,
+				F6C87E802080729B005AAC5B /* slideBar.xib in Resources */,
 				F685EBA42032516100BDBC06 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,7 +206,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		C57671126A4E2D4A222EED56 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -207,10 +214,9 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		F177E218EB3CAE1085E0640A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -218,9 +224,14 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-sleepRecorder/Pods-sleepRecorder-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -233,13 +244,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-sleepRecorder-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -251,6 +265,7 @@
 			files = (
 				F6B14E2920354EC5006E3E71 /* Recorder.swift in Sources */,
 				F685EBAF2032519F00BDBC06 /* extension.swift in Sources */,
+				F6C87E7E20807207005AAC5B /* slideBar.swift in Sources */,
 				F685EBB32032525400BDBC06 /* RecorderView.swift in Sources */,
 				F685EB9F2032516100BDBC06 /* recorderControler.swift in Sources */,
 				F63B599420454EF600C1E9AA /* audioFile.swift in Sources */,
