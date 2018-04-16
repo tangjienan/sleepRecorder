@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import Foundation
 import CoreAudio
+import SnapKit
 
 class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
 
@@ -18,18 +19,23 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
     var audioSession = AVAudioSession.sharedInstance()
     var player : AVAudioPlayer?
     let fileManager = FileManager.default
+    var clearButton : UIButton?
+    
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
         readList()
     }
     override func viewWillAppear(_ animated: Bool) {
         readList()
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
+        //self.tableView.layoutIfNeeded()
     }
     
-    // MARK: - Table view data source
+    // MARK:- Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -76,6 +82,36 @@ class recordingListVC: UITableViewController,AVAudioPlayerDelegate {
             return
         }
         playStop()
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let vw = headerView()
+        self.clearButton = vw.clearButton
+        self.clearButton?.addTarget(self, action: #selector(clearAllFiles), for: .touchDown)
+        return vw
+    }
+    
+    @objc func clearAllFiles(){
+        fileNameArray.removeAll()
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let docsDirect = paths[0]
+        let enumerator = FileManager.default.enumerator(at : docsDirect, includingPropertiesForKeys: nil,options: [.skipsHiddenFiles, .skipsPackageDescendants])!.allObjects
+        for tmp in enumerator{
+            let tmp = tmp as! URL
+            do{
+                try fileManager.removeItem(at: tmp)
+            }
+            catch{
+                print("errir \(error)")
+                return
+            }
+        }
+        self.tableView.reloadData()
+    }
+    
+    
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50.0
     }
     
     func readList(){

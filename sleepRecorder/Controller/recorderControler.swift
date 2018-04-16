@@ -39,13 +39,18 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         didSet{
             if recording == 0{
                 if listening == 1{
+                    if self.statusLabel != nil{
+                        self.statusLabel?.text = "Listening..."
+                    }
                     mainView.backgroundColor = listeningColor
                 }
                 else if listening == 0{
+                    self.statusLabel?.text = "Stop"
                     mainView.backgroundColor = waitingColor
                 }
             }
             else if recording == 1{
+                self.statusLabel?.text = "Recording..."
                 mainView.backgroundColor = recordingColor
             }
         }
@@ -127,6 +132,7 @@ class recorderControler: UIViewController,AVAudioRecorderDelegate{
         checkSound?.stop()
         levelTimer.invalidate()
         listening = 0
+        saveRec = nil
     }
     
     @objc func checkAudioForInterval(_ timer : Timer){

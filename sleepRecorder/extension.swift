@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import SnapKit
+
 
 extension UIColor {
     
@@ -90,6 +92,20 @@ extension Date {
     }
 }
 
+
+//extension recordingListVC {
+//    func customHeader() -> UIView{
+//        let head = UIView()
+//        let button = UIButton()
+//        button.setTitle("Clear All", for: .normal)
+//        head.addSubview(button)
+//        button.snp.makeConstraints { (make) in
+//            make.top.equalTo(head.snp.top)
+//            make.right.equalTo(head?.snp.right)
+//        }
+//        return head
+//    }
+//}
 
 
 extension String {
